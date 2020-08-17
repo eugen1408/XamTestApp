@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:XamTestApp.Controls"
+             mc:Ignorable="d"
+             x:Class="XamTestApp.Views.ContactsPage"
+             Title="Список контактов">
+
+    <Shell.SearchHandler>
+        <controls:ContactsSearchHandler Placeholder="Поиск по контактам" ShowsResults="True" ItemsSource="{Binding Contacts}" SearchBoxVisibility="Expanded">
+            <SearchHandler.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="8" RowDefinitions="Auto, Auto">
+                        <Label Text="{Binding Name}" FontSize="Medium" />
+                        <Label Text="{Binding Phone}" FontSize="Small" Grid.Row="1"/>
+                    </Grid>
+                </DataTemplate>
+            </SearchHandler.ItemTemplate>
+        </controls:ContactsSearchHandler>
+    </Shell.SearchHandler>
+    <ListView ItemsSource="{Binding Contacts}" CachingStrategy="RecycleElementAndDataTemplate" HasUnevenRows="True" SelectionMode="None"
+              IsRefreshing="{Binding IsBusy, Mode=OneWay}" IsPullToRefreshEnabled="True" RefreshCommand="{Binding ForceLoadContactsCommand}">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Grid Padding="8" RowDefinitions="Auto, Auto" ColumnDefinitions="3*, 1*">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenContactDetailsCommand}"/>
+                        </Grid.GestureRecognizers>
+                        <Label Text="{Binding Name}" FontSize="Medium" />
+                        <Label Text="{Binding Phone}" FontSize="Small" Grid.Row="1"/>
+                        <Label Text="{Binding Height}" HorizontalOptions="End" FontSize="Small" Grid.Column="1"/>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>
