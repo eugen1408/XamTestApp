@@ -1,5 +1,5 @@
-﻿using Xamarin.Forms;
-using XamTestApp.Services;
+﻿using System.Threading;
+using Xamarin.Forms;
 
 namespace XamTestApp
 {
@@ -9,8 +9,8 @@ namespace XamTestApp
         public App()
         {
             InitializeComponent();
-
-            DependencyService.Register<MockDataStore>();
+            // для форматирования даты
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             MainPage = new AppShell();
         }
 
