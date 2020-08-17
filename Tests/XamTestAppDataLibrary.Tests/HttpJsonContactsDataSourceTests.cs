@@ -36,6 +36,7 @@ namespace XamTestAppDataLibrary.Tests
                 Assert.NotNull(contact.Biography);
                 Assert.NotNull(contact.EducationPeriod);
                 Assert.NotNull(contact.Name);
+                Assert.NotNull(contact.Phone);
                 Assert.NotEqual(0, contact.Height);
             }
         }
