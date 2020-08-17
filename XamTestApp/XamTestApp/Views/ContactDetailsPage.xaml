@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="XamTestApp.Views.ContactDetailsPage"
+             Title="{Binding Name}">
+
+    <ScrollView>
+        <StackLayout Spacing="8" Padding="15">
+            <Label Text="{Binding Name}" FontSize="Large"/>
+            <Label Text="{Binding Phone}" TextColor="{DynamicResource NavigationPrimary}" TextDecorations="Underline">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenPhoneDialerCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="{Binding Temperament}" TextColor="Gray"/>
+            <Label Text="{Binding EducationPeriod}" TextColor="Gray"/>
+            <Label Text="{Binding Biography}"/>
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>
