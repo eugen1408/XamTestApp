@@ -3,29 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using Xamarin.Forms;
-
-using XamTestApp.Models;
-using XamTestApp.Services;
-
 namespace XamTestApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
-
-        private bool isBusy = false;
+        private bool _isBusy = false;
         public bool IsBusy
         {
-            get => isBusy;
-            set => SetProperty(ref isBusy, value);
-        }
-
-        private string title = string.Empty;
-        public string Title
-        {
-            get => title;
-            set => SetProperty(ref title, value);
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
