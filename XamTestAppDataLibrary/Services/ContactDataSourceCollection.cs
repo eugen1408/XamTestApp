@@ -4,13 +4,12 @@ using XamTestAppDataLibrary.Models;
 
 namespace XamTestAppDataLibrary.Services
 {
-    public class ContactDataSourceCollection : List<IContactsDataSource>
+    public class ContactDataSourceCollection : List<IContactsDataSource>, IContactDataSourceCollection
     {
         public async Task<List<Contact>> GetContactsAsync()
         {
             var output = new List<Contact>();
 
-            // можно было бы сделать параллельное получение данных, но не стал усложнять
             foreach (var contactsDataSource in this)
             {
                 var contacts = await contactsDataSource.GetContactsAsync();
