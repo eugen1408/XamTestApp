@@ -19,13 +19,6 @@ namespace XamTestApp.Views
             BindingContext = _viewModel = new ContactsViewModel();
         }
 
-        private async void OnItemSelected(object sender, EventArgs args)
-        {
-            var layout = (BindableObject)sender;
-            var item = (ContactViewModel)layout.BindingContext;
-            await Navigation.PushAsync(new ContactDetailsPage(item));
-        }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
