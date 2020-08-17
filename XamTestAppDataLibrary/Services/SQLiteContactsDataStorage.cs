@@ -6,7 +6,7 @@ using XamTestAppDataLibrary.Models;
 
 namespace XamTestAppDataLibrary.Services
 {
-    public class SQLiteContactsDataStorage : IContactsDataSource, IContactsDataStorage
+    public class SQLiteContactsDataStorage : IContactsDataStorage
     {
 
         private readonly SQLiteAsyncConnection _connection;
