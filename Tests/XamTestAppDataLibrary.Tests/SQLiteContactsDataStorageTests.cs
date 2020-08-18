@@ -12,7 +12,7 @@ namespace XamTestAppDataLibrary.Tests
         {
             // Arrange
             var httpJsonContactsDataSource = new HttpJsonContactsDataSource("https://raw.githubusercontent.com/Newbilius/ElbaMobileXamarinDeveloperTest/master/json/generated-01.json");
-            var SQLiteContactsDataStorage = new SQLiteContactsDataStorage(Path.Combine(Path.GetTempPath(), "XamTestEvaganov.db"), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
+            var SQLiteContactsDataStorage = new SQLiteContactsCache(Path.Combine(Path.GetTempPath(), "XamTestEvaganov.db"), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
 
             // Act
             var contacts = await httpJsonContactsDataSource.GetContactsAsync();
@@ -26,13 +26,12 @@ namespace XamTestAppDataLibrary.Tests
         public async void GetContactsAsync_ShouldReadFromDB()
         {
             // Arrange
-            var SQLiteContactsDataStorage = new SQLiteContactsDataStorage(Path.Combine(Path.GetTempPath(), "XamTestEvaganov.db"), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
+            var SQLiteContactsDataStorage = new SQLiteContactsCache(Path.Combine(Path.GetTempPath(), "XamTestEvaganov.db"), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
 
             // Act
             var actual = await SQLiteContactsDataStorage.GetContactsAsync();
 
             // Assert
-            Assert.NotEmpty(actual);
             foreach (var contact in actual)
             {
                 Assert.NotNull(contact.Id);
