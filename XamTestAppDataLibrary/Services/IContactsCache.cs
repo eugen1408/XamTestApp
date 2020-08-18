@@ -4,7 +4,7 @@ using XamTestAppDataLibrary.Models;
 
 namespace XamTestAppDataLibrary.Services
 {
-    public interface IContactsDataStorage : IContactsDataSource
+    public interface IContactsCache : IContactsDataSource
     {
         Task<int> SaveContactsAsync(IEnumerable<Contact> contacts);
     }
