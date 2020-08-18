@@ -8,13 +8,13 @@ using XamTestAppDataLibrary.Models;
 
 namespace XamTestAppDataLibrary.Services
 {
-    public class SQLiteContactsDataStorage : IContactsDataStorage
+    public class SQLiteContactsCache : IContactsCache
     {
         private readonly string _databasePath;
         private readonly SQLiteOpenFlags _flags;
         private readonly Lazy<SQLiteAsyncConnection> _lazyInitializer;
 
-        public SQLiteContactsDataStorage(string databasePath, SQLiteOpenFlags flags)
+        public SQLiteContactsCache(string databasePath, SQLiteOpenFlags flags)
         {
             _databasePath = databasePath ?? throw new ArgumentNullException(nameof(databasePath));
             _flags = flags;
