@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using XamTestAppDataLibrary.Models;
 
@@ -6,7 +7,7 @@ namespace XamTestAppDataLibrary.Services
 {
     public class ContactDataSourceCollection : List<IContactsDataSource>, IContactDataSourceCollection
     {
-        public async Task<List<Contact>> GetContactsAsync()
+        public async Task<IEnumerable<Contact>> GetContactsAsync()
         {
             var output = new List<Contact>();
 
@@ -16,7 +17,7 @@ namespace XamTestAppDataLibrary.Services
                 output.AddRange(contacts);
             }
 
-            return output;
+            return output.OrderBy(p => p.Name);
         }
     }
 }

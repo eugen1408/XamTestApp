@@ -21,30 +21,33 @@ namespace XamTestApp.Services
                 new HttpJsonContactsDataSource("https://raw.githubusercontent.com/Newbilius/ElbaMobileXamarinDeveloperTest/master/json/generated-03.json")
             };
 
-        private static readonly IContactsDataStorage _contactsDataStorage = new SQLiteContactsDataStorage(Consts.DatabasePath, Consts.DatabaseFlags); 
+        private static readonly IContactsCache _contactsCache = new SQLiteContactsCache(Consts.DatabasePath, Consts.DatabaseFlags); 
         #endregion
 
-        public static async Task<IEnumerable<Contact>> GetContactsAsync(LoadContactsMethod loadContactsMethod)
+        public static async Task<IEnumerable<Contact>> GetContactsFromSourceAsync(bool forceReload)
         {
             const string LastGetContactsTime = "LastGetContactsTime";
             var lastGetContactsTime = Preferences.Get(LastGetContactsTime, DateTime.MinValue);
             IEnumerable<Contact> output;
-            if (loadContactsMethod == LoadContactsMethod.ReloadFromCache)
-            {
-                output = await _contactsDataStorage.GetContactsAsync();
-            }
             // принудительное обновление или вышло время жизни кэша
-            else if (loadContactsMethod == LoadContactsMethod.ForceReload || DateTime.UtcNow.Subtract(_cacheTTL) > lastGetContactsTime)
+            if (forceReload || DateTime.UtcNow.Subtract(_cacheTTL) > lastGetContactsTime)
             {
                 output = await _sourceCollection.GetContactsAsync();
-                await _contactsDataStorage.SaveContactsAsync(output);
+                await _contactsCache.SaveContactsAsync(output);
                 Preferences.Set(LastGetContactsTime, DateTime.UtcNow);
+                return output.OrderBy(p => p.Name);
             }
             // иначе берем из кэша
             else
             {
-                output = await _contactsDataStorage.GetContactsAsync();
+                return await GetContactsFromCacheAsync();
             }
+        }
+
+        public static async Task<IEnumerable<Contact>> GetContactsFromCacheAsync()
+        {
+            IEnumerable<Contact> output;
+            output = await _contactsCache.GetContactsAsync();
             return output.OrderBy(p => p.Name);
         }
     }

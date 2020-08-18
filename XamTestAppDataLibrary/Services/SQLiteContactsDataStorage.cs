@@ -40,7 +40,7 @@ namespace XamTestAppDataLibrary.Services
 
 
 
-        public Task<List<Contact>> GetContactsAsync() => Connection.Table<Contact>().ToListAsync();
+        public Task<List<Contact>> GetContactsAsync() => Connection.Table<Contact>().OrderBy(p => p.Name).ToListAsync();
 
         public async Task<int> SaveContactsAsync(IEnumerable<Contact> contacts)
         {

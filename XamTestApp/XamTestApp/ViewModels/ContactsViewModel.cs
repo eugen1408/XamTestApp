@@ -19,16 +19,16 @@ namespace XamTestApp.ViewModels
         {
             Contacts = new ObservableCollection<ContactViewModel>();
             LoadContactsCommand = new Command(async () => await ExecuteLoadContactsCommand());
-            ForceLoadContactsCommand = new Command(async () => await ExecuteLoadContactsCommand(LoadContactsMethod.ForceReload));
+            ForceLoadContactsCommand = new Command(async () => await ExecuteLoadContactsCommand(forceReload: true));
         }
 
         #region Commands
-        private async Task ExecuteLoadContactsCommand(LoadContactsMethod loadContactsMethod = LoadContactsMethod.Default)
+        private async Task ExecuteLoadContactsCommand(bool forceReload = false)
         {
             IsBusy = true;
             try
             {
-                var contacts = await ContactsDataStore.GetContactsAsync(loadContactsMethod);
+                var contacts = await ContactsDataStore.GetContactsFromSourceAsync(forceReload);
                 Contacts.Clear();
                 foreach (var contact in contacts)
                 {
@@ -41,15 +41,15 @@ namespace XamTestApp.ViewModels
                 Debug.WriteLine(ex);
 #endif
                 await Shell.Current.DisplayAlert($"Ошибка", "Произошла ошибка при загрузке контактов. Будут показаны контакты из локальной БД.", "OK");
+                // если это первая загрузка и список пустой, загрузим из кэша
+                if (Contacts.Count == 0)
+                {
+                    await LoadContactsFromCache();
+                }
             }
             finally
             {
                 IsBusy = false;
-            }
-            // если это первая загрузка и список пустой, загрузим из кэша
-            if (Contacts.Count == 0)
-            {
-                await LoadContactsFromCache();
             }
         }
 
@@ -58,7 +58,7 @@ namespace XamTestApp.ViewModels
             IsBusy = true;
             try
             {
-                var contacts = await ContactsDataStore.GetContactsAsync(LoadContactsMethod.ReloadFromCache);
+                var contacts = await ContactsDataStore.GetContactsFromCacheAsync();
                 foreach (var contact in contacts)
                 {
                     Contacts.Add(new ContactViewModel(contact));

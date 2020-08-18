@@ -6,6 +6,6 @@ namespace XamTestAppDataLibrary.Services
 {
     public interface IContactDataSourceCollection
     {
-        Task<List<Contact>> GetContactsAsync();
+        Task<IEnumerable<Contact>> GetContactsAsync();
     }
 }
